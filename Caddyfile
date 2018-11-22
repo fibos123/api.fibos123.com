@@ -1,0 +1,25 @@
+api.fibos123.com:80 {
+    gzip
+    proxy / http://api:3000 {
+        transparent
+    }
+    header / {
+        -Server
+    }
+}
+
+rpc-mainnet.fibos123.com:80 {
+    gzip
+    proxy /v1/history/ http://history:10401 {
+        transparent
+    }
+    proxy / http://fibos-node:8888 {
+        transparent
+    }
+    header / {
+        Access-Control-Allow-Headers  "DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization"
+        Access-Control-Allow-Origin  *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        -Server
+    }
+}
