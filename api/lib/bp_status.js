@@ -189,7 +189,7 @@ function getBPs (err, res) {
 	                    "index_position": 2,
 	            }
 	}, function (err, response, body) {
-		console.log(url.rpc.endpoint, url.rpc.get_table_rows, err, body);
+		// console.log(url.rpc.endpoint, url.rpc.get_table_rows, err, body);
 		if (!err && body && body.rows && body.rows.length == 21) {
 			var list = body.rows;
 			bps = [];
