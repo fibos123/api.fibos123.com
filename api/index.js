@@ -48,7 +48,6 @@ app.get('/bp_status_change_logs', function (req, res) {
     res.json(bp_status.bp_status_change_logs());
 });
 
-
 // BP 的出块统计、最终出块时间
 app.get('/bp_info', function (req, res) {
 	var bpname = req.query.bpname;
@@ -64,7 +63,7 @@ app.get('/bp_info', function (req, res) {
 // P2P 状态检查
 app.get('/check_p2p', function (req, res) {
 	var host = req.query.host;
-	if (!/^[0-9a-z\.]*$/ig.test(host)) {
+	if (!/^[0-9a-z\.\-]*$/ig.test(host)) {
 		res.send({});
 		return;
 	}
