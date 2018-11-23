@@ -21,7 +21,7 @@ var bp_status_tmp_file = config.bp_status_tmp_file;
 var bp_status_log_birthtime = "2018-09-06T12:21:56.985Z";
 var now_time = new Date;
 var bp_status_change_logs = [];
-var offline_date = {};
+var date_cache = {};
 
 last_status = (fs.existsSync(bp_status_tmp_file)) ? JSON.parse(fs.readFileSync(bp_status_tmp_file, 'utf8')) : {};
 
@@ -65,10 +65,14 @@ function getLog() {
 				online[bpname] = 1;
 				status_number_tmp[bpname] = {
 					bpname: bpname,
-					// status: "online",
 					number: res[1],
 					date: res[2] + "Z",
 				};
+				date_cache[bpname] = {
+					bpname: bpname,
+					number: res[1],
+					date: res[2] + "Z",
+				}
 				status[bpname] = "online";
 			}
 			// log_mtime = res[2];
@@ -76,6 +80,7 @@ function getLog() {
 		}
 	}
 
+	// offline
 	for (var i = 0; i < bps.length; i++) {
 		if ("undefined" === typeof online[bps[i]]) {
 			var bpname = bps[i];
@@ -83,39 +88,16 @@ function getLog() {
 			status[bpname] = "offline";
 			status_number_tmp[bpname] = {
 				bpname: bpname,
-				// status: "offline",
 				number: 0,
 				date: 0,
 			}
-
-			if (!util.checkNullObj(offline_date[bpname])) {
+			if (!util.checkNullObj(date_cache[bpname])) {
 				status_number_tmp[bpname] = {
 					bpname: bpname,
-					// status: "offline",
-					number: offline_date[bpname].number,
-					date: offline_date[bpname].date + "Z",
+					number: date_cache[bpname].number,
+					date: date_cache[bpname].date + "Z",
 				}
-			} else if (!util.checkNullObj(online)) {
-				console.log("grep sort ", bpname);
-				// var cmdStr = 'grep -a -i "signed by '+bpname+' " ' + fibos_log_file + ' | sort -r | head -n 1';
-				var cmdStr = 'docker logs fibos-node 2>&1 | grep -a -i "signed by '+bpname+' " | sort -r | head -n 1';
-				exec(cmdStr, function (err, res) {
-					var res = re.exec(res);
-					// console.log(res)
-					// console.log(lines, res)
-					if (!util.checkNullObj(res)) {
-						var bpname = res[3];
-						// console.log("bpname2", bpname);
-						offline_date[bpname] = {
-							bpname: bpname,
-							// status: "offline",
-							number: res[1],
-							date: res[2],
-						};
-					}
-				});
 			}
-
 		}
 	}
 
@@ -124,11 +106,6 @@ function getLog() {
 		status_number.push(status_number_tmp[i])
 	}
 	status_number.sort(util.compare_sort("bpname"));
-
-	// fs.stat(fibos_log_file, function (err, data){
-	// 	if (!err)
-	// 		log_mtime = data.mtime;
-	// })
 
 	// diff
 	var diffs = [];
@@ -168,7 +145,7 @@ function getLog() {
 		});
 		fs.writeFile(bp_status_tmp_file, JSON.stringify(status), function(err) {
 		});
-		offline_date = {};
+		// date_cache = {};
 	}
 
 	bp_status_refresh_time = new Date();

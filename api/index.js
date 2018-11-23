@@ -13,6 +13,7 @@ const bp_history = require('./lib/bp_history');
 var app = express();
 
 var port = 3000;
+console.log("v1.0.1");
 
 // app.use(morgan('short'));
 app.use(compression());
@@ -51,37 +52,54 @@ app.get('/bp_status_change_logs', function (req, res) {
 // BP 的出块统计、最终出块时间
 app.get('/bp_info', function (req, res) {
 	var bpname = req.query.bpname;
-    bp_info.bp_info(bpname, function(data){
-    	res.send(data);
-    })
+	if (!/^[0-9a-z\.]*$/ig.test(bpname)) {
+		res.send({});
+		return;
+	}
+	bp_info.bp_info(bpname, function(data){
+		res.send(data);
+	})
 });
 
 // P2P 状态检查
 app.get('/check_p2p', function (req, res) {
 	var host = req.query.host;
+	if (!/^[0-9a-z\.]*$/ig.test(host)) {
+		res.send({});
+		return;
+	}
 	var port = parseInt(req.query.port);
 	check_p2p.check_p2p(host, port, function(data){
 		res.json(data)
 	})
 });
 
+// 出块历史
+app.get('/bp_history', function (req, res) {
+    var bpname = req.query.bpname;
+	if (!/^[0-9a-z\.]*$/ig.test(bpname)) {
+		res.send({});
+		return;
+	}
+
+    bp_history.bp_history(bpname, function(data){
+    	res.json(data);
+    })
+});
+
 // json2jsonp
 app.get('/json2jsonp', function (req, res) {
-    var url = req.query.url;
+	var url = req.query.url;
+	if (url != "https://fibos.io/getExchangeInfo") {
+		res.send({});
+		return;
+	}
     var callback = req.query.callback;
     json2jsonp.json2jsonp(url, callback, function(data){
     	res.send(data);
     })
 });
 
-// 出块历史
-app.get('/bp_history', function (req, res) {
-    var bpname = req.query.bpname;
-
-    bp_history.bp_history(bpname, function(data){
-    	res.json(data);
-    })
-});
 
 app.listen(port, function () {
   console.log('App listening on port', port);
