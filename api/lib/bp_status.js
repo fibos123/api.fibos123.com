@@ -22,6 +22,7 @@ var bp_status_log_birthtime = "2018-09-06T12:21:56.985Z";
 var now_time = new Date;
 var bp_status_change_logs = [];
 var date_cache = {};
+var start_time = new Date().getTime();
 
 last_status = (fs.existsSync(bp_status_tmp_file)) ? JSON.parse(fs.readFileSync(bp_status_tmp_file, 'utf8')) : {};
 
@@ -140,9 +141,12 @@ function getLog() {
 
 	if (diffs.length){
 		console.log("diffs", diffs)
-		fs.appendFile(bp_status_log_file, diffs.join("\r\n") + "\r\n", function (err) {
-			bp_status_change_logs = getBpStatusChangeLogs();
-		});
+		// 启动前三分钟不写入记录
+		if (new Date().getTime() - start_time > 3*60*1000) {
+			fs.appendFile(bp_status_log_file, diffs.join("\r\n") + "\r\n", function (err) {
+				bp_status_change_logs = getBpStatusChangeLogs();
+			});
+		}
 		fs.writeFile(bp_status_tmp_file, JSON.stringify(status), function(err) {
 		});
 		// date_cache = {};
@@ -197,6 +201,21 @@ function getBpStatusChangeLogs () {
 }
 
 function bp_status() {
+
+	// 启动前三分钟不显示结果
+	if (new Date().getTime() - start_time < 3*60*1000) {
+		return {
+			_rows: status,
+			_rows2: status_number,
+			rows: {},
+			rows2: [],
+			head_block_num: get_info.head_block_num,
+			head_block_time: get_info.head_block_time,
+			head_block_producer: get_info.head_block_producer,
+			bp_status_refresh_time: bp_status_refresh_time,
+		};
+	}
+	
 	return {
 		rows: status,
 		rows2: status_number,
@@ -204,7 +223,6 @@ function bp_status() {
 		head_block_time: get_info.head_block_time,
 		head_block_producer: get_info.head_block_producer,
 		bp_status_refresh_time: bp_status_refresh_time,
-		// log_mtime: log_mtime,
 	};
 }
 function bp_status_change_logs_function() {

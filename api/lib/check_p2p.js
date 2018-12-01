@@ -43,7 +43,7 @@ function check_p2p(host, port, callback){
 		// set cache
 		check_p2p_temp[host] = {
 			time: new Date().getTime() / 1000,
-			rows: rows,
+			rows: rows || check_p2p_temp[host].rows,
 		};
 	});
 
