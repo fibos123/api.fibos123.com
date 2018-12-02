@@ -1,4 +1,5 @@
 const exec = require('child_process').exec;
+const util = require('./util').util;
 const {url, config} = require('../_config');
 
 var check_p2p_temp = {};
@@ -43,7 +44,7 @@ function check_p2p(host, port, callback){
 		// set cache
 		check_p2p_temp[host] = {
 			time: new Date().getTime() / 1000,
-			rows: rows || check_p2p_temp[host].rows,
+			rows: util.checkNullObj(rows) ? check_p2p_temp[host].rows : rows,
 		};
 	});
 
