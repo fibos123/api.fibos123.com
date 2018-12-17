@@ -26,13 +26,12 @@ fibos.load("net", {
     "p2p-listen-endpoint": "0.0.0.0:9876",
     "p2p-peer-address": [
 
-        "p2p.eossay.com:9870",
         "p2p.otclook.com:9870",
         "seed.bitze.site:9870",
         "47.74.181.212:27672",
-        "13.78.23.108:9870",
+        "api.xxq.pub:8888",
         "fibos.eosforum.one",
-        "p2p.doittotheend.xyz:9870",
+        "p2p.fibos.pw:59898",
         "p2p.fometa.io:59877",
         "p2p-mainnet.fibos123.com:9977",
         "p2p.fibos.fi:59595",
@@ -46,6 +45,7 @@ fibos.load("net", {
         "47.92.122.2:9870",
         "se-p2p.fibos.io:9870",
         "p2p.fophoenix.com:9870",
+        "seed.fopool.xyz:9870",
         "seed.fibos.rocks:10100",
         "p2p.fospider.com:9870",
         "fibos.tokenasst.com:9870",
@@ -58,6 +58,7 @@ fibos.load("net", {
         "p2p-mainnet.loveyy.xyz:9871",
         "p2p.fibos.team:9876",
         "ln-p2p.fibos.io:9870",
+        "seed.fomaya.club:9870",
         "seed.fiboso.com:9965",
         "185.243.57.158:9870",
         "fibos.smr123.com:7890",
@@ -68,6 +69,8 @@ fibos.load("net", {
         "ppray.com:9870",
         "fibos.qubitfund.com:9870",
         "p2p-mainnet.qingah.com:9876",
+        "p2p.eosays.com:9870",
+        "p2p.eosas.io:9870",
         "47.96.101.244:9898",
     
     ],
@@ -78,8 +81,8 @@ fibos.load("producer");
 fibos.load("chain", chain);
 fibos.load("chain_api");
 
-fibos.load("mongo_db", {
-    "mongodb-uri": "mongodb://mongo:27017/fibos"
-});
+// fibos.load("mongo_db", {
+//     "mongodb-uri": "mongodb://mongo:27017/fibos"
+// });
 
 fibos.start();

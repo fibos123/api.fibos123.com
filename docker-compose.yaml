@@ -1,27 +1,27 @@
 version: '3.1'
 
 services:
-  mongo:
-    image: mongo
-    restart: always
-    ports:
-      - 27017:27017
-    volumes:
-      - ./_data_mongo:/data/db
+  # mongo:
+  #   image: mongo
+  #   restart: always
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - ./_data_mongo:/data/db
 
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always
+  #   ports:
+  #     - 8081:8081
 
   fibos:
     build: ./fibos
     restart: always
     container_name: fibos-node
     stop_grace_period: 10m
-    links: 
-      - mongo
+    # links: 
+    #   - mongo
     ports:
       - 8888:8888
       - 9977:9876
@@ -34,7 +34,7 @@ services:
     build: ./api
     restart: always
     links: 
-      - mongo
+      # - mongo
       - fibos
     ports:
       - 3000:3000
@@ -45,23 +45,23 @@ services:
       - ./api/index.js:/api/index.js
       - ./api/lib:/api/lib
 
-  history:
-    build: ./history
-    restart: always
-    links: 
-      - mongo
-    ports:
-      - 10401:10401
-    volumes:
-      - ./history/index.js:/api/index.js
+  # history:
+  #   build: ./history
+  #   restart: always
+  #   links: 
+  #     - mongo
+  #   ports:
+  #     - 10401:10401
+  #   volumes:
+  #     - ./history/index.js:/api/index.js
 
   caddy:
     image: abiosoft/caddy
     restart: always
     links: 
-      - mongo
+      # - mongo
       - fibos
-      - history
+      # - history
       - api
     ports:
       - 80:80
