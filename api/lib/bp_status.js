@@ -45,8 +45,8 @@ function getLog() {
 	// #1708075 @ 2018-09-07T13:16:43.000 signed by liuqiangdong [
 	var re = new RegExp(/#(.*)\s@\s(.*)\ssigned\sby\s(.*)\s\[/g);
 
-	// var cmdStr = 'tail -504 ' + fibos_log_file; // 一个节点生产12块 * 21个节点 * 2轮，12 * 21 * 2 = 504
-	var cmdStr = 'docker logs fibos-node --tail 504 2>&1'
+	// var cmdStr = 'tail -504 ' + fibos_log_file; // 一个节点生产12块 * 21个节点 * 2轮，12 * 21 * 3 = 756
+	var cmdStr = 'docker logs fibos-node --tail 756 2>&1'
 	// console.log("exec cmdStr");
 	exec(cmdStr, function (err, res) {
 		lines = res.split("\n");

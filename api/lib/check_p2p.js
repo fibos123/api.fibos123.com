@@ -34,7 +34,7 @@ function check_p2p(host, port, callback){
     	}
     }
 
-	var cmdStr = 'docker logs fibos-node --tail 1000 2>&1 | grep -a -i " ' + host + '" | sort -r | head -n 2';
+	var cmdStr = 'docker logs fibos-node --tail 1000 2>&1 | grep -a -i " ' + host + '" | sort -k 2 -b -r | head -n 2';
 	console.log("exec grep p2p", host);
 	console.time("exec grep p2p " + host)
 	exec(cmdStr, function (err, res1) {
