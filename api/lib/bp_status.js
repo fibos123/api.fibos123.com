@@ -96,7 +96,7 @@ function getLog() {
 				status_number_tmp[bpname] = {
 					bpname: bpname,
 					number: date_cache[bpname].number,
-					date: date_cache[bpname].date + "Z",
+					date: date_cache[bpname].date,
 				}
 			}
 		}
