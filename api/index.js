@@ -94,7 +94,7 @@ app.get('/json2jsonp', function (req, res) {
     'https://api.bit.cc/ticker.php?c=fo&mk_type=btc',
     'https://api.bit.cc/ticker.php?c=eos&mk_type=btc',
   ]
-  if (whiteList.indexOf(url) === 0) {
+  if (whiteList.indexOf(url) === -1) {
     res.send({});
     return;
   }
