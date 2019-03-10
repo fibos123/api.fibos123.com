@@ -2,3 +2,5 @@
 /_data_api
 /_data_fibos
 /_data_mongo
+node_modules
+yarn.lock
