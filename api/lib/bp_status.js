@@ -16,11 +16,11 @@ var get_info = {head_block_num: "", head_block_time: "", head_block_producer: ""
 var bp_status_refresh_time = new Date();
 var fibos_log_file = config.log_file;
 // var log_mtime = 0;
-var bp_status_log_file = config.bp_status_log_file;
+// var bp_status_log_file = config.bp_status_log_file;
 var bp_status_tmp_file = config.bp_status_tmp_file;
 var bp_status_log_birthtime = "2018-09-06T12:21:56.985Z";
 var now_time = new Date;
-var bp_status_change_logs = [];
+// var bp_status_change_logs = [];
 var date_cache = {};
 var start_time = new Date().getTime();
 
@@ -28,7 +28,7 @@ last_status = (fs.existsSync(bp_status_tmp_file)) ? JSON.parse(fs.readFileSync(b
 
 getBPs();
 getLog();
-bp_status_change_logs = getBpStatusChangeLogs();
+// bp_status_change_logs = getBpStatusChangeLogs();
 
 setInterval(function (){
 	getBPs()
@@ -142,11 +142,11 @@ function getLog() {
 	if (diffs.length){
 		console.log("diffs", diffs)
 		// 启动前三分钟不写入记录
-		if (new Date().getTime() - start_time > 3*60*1000) {
-			fs.appendFile(bp_status_log_file, diffs.join("\r\n") + "\r\n", function (err) {
-				bp_status_change_logs = getBpStatusChangeLogs();
-			});
-		}
+		// if (new Date().getTime() - start_time > 3*60*1000) {
+		// 	fs.appendFile(bp_status_log_file, diffs.join("\r\n") + "\r\n", function (err) {
+		// 		bp_status_change_logs = getBpStatusChangeLogs();
+		// 	});
+		// }
 		fs.writeFile(bp_status_tmp_file, JSON.stringify(status), function(err) {
 		});
 		// date_cache = {};
@@ -187,18 +187,18 @@ function getBPs (err, res) {
 
 }
 
-function getBpStatusChangeLogs () {
-	var array = []
+// function getBpStatusChangeLogs () {
+// 	var array = []
 
-	if (fs.existsSync(bp_status_log_file)) {
-		var res = fs.readFileSync(bp_status_log_file, 'utf8').split("\r\n");
-		for (var i = 0; i < res.length - 1; i++) {
-			array[i] = JSON.parse(res[i]);
-		}
-	}
+// 	if (fs.existsSync(bp_status_log_file)) {
+// 		var res = fs.readFileSync(bp_status_log_file, 'utf8').split("\r\n");
+// 		for (var i = 0; i < res.length - 1; i++) {
+// 			array[i] = JSON.parse(res[i]);
+// 		}
+// 	}
 
-	return array;
-}
+// 	return array;
+// }
 
 function bp_status() {
 
@@ -225,13 +225,13 @@ function bp_status() {
 		bp_status_refresh_time: bp_status_refresh_time,
 	};
 }
-function bp_status_change_logs_function() {
-	return {
-    	log_birthtime: bp_status_log_birthtime,
-    	now_time: now_time,
-    	rows: util.copy(bp_status_change_logs).reverse().slice(0, 100),
-    };
-}
+// function bp_status_change_logs_function() {
+// 	return {
+//     	log_birthtime: bp_status_log_birthtime,
+//     	now_time: now_time,
+//     	rows: util.copy(bp_status_change_logs).reverse().slice(0, 100),
+//     };
+// }
 
 exports.bp_status = bp_status
-exports.bp_status_change_logs = bp_status_change_logs_function
+// exports.bp_status_change_logs = bp_status_change_logs_function
