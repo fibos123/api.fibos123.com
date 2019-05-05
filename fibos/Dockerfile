@@ -1,12 +1,7 @@
 FROM ubuntu:16.04
-LABEL Maintainer="William Fouvy <fouvey@gmail.com>"
-
-STOPSIGNAL SIGINT
 
 RUN apt-get update -y \
-  && apt-get install -y curl \
-  && apt-get install -y sudo \
-  && apt-get install -y openssl \
+  && apt-get install -y curl sudo openssl \
   && curl -s https://fibos.io/download/installer.sh?v1_5_4_1 | sh
 
 CMD ["fibos", "/fibos/start.js"]

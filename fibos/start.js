@@ -37,10 +37,13 @@ fibos.load("http", {
 });
 
 setInterval(function () {
-  console.log(httpClient.get("http://localhost:8888/v1/producer/create_snapshot").json())
+  var create_snapshot = httpClient.get("http://localhost:8888/v1/producer/create_snapshot").json()
+  console.log(create_snapshot)
   var snapshots = fs.readdir("./data/snapshots")
-  for (var i = 0; i < snapshots.length - 1; i++) {
-    fs.unlink('./data/snapshots/' + snapshots[i])
+  for (var i = 0; i < snapshots.length; i++) {
+    if (snapshots[i].indexOf(create_snapshot.head_block_id) === -1) {
+      fs.unlink('./data/snapshots/' + snapshots[i])
+    }
   }
 }, 1 * 60 * 60 * 1000) // ever 1 hour backup
 

@@ -12,10 +12,10 @@ api.fibos123.com:80 {
 rpc-mainnet.fibos123.com:80 {
     gzip
     log / stdout "{combined}"
-    proxy /v1/producer/create_snapshot http://fibos-node:9999 {
+    proxy /v1/producer/create_snapshot http://fibos:9999 {
       transparent
     }
-    proxy / http://fibos-node:8888 {
+    proxy / http://fibos:8888 {
         transparent
     }
     header / {

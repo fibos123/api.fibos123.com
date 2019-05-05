@@ -11,7 +11,7 @@ const json2jsonp = require('./lib/json2jsonp');
 var app = express();
 
 var port = 3000;
-console.log("v1.0.1");
+console.log("v1.0.2");
 
 // app.use(morgan('short'));
 app.use(compression());
@@ -28,7 +28,7 @@ app.get('/', function (req, res) {
   res.send(
     '<a href="/bp_status">/bp_status</a><br>' +
     '<a href="/check_p2p?host=p2p-mainnet.fibos123.com&port=9977">/check_p2p</a><br>' +
-    '<a href="/json2jsonp?url=' + encodeURIComponent("https://fibos.io/getExchangeInfo") + '&callback=call">/json2jsonp</a><br>' +
+    '<a href="/json2jsonp?url=' + encodeURIComponent("https://api.aex.plus/ticker.php?c=fo&mk_type=cnc") + '&callback=call">/json2jsonp</a><br>' +
     '<center><img src="https://i.pinimg.com/originals/40/f4/82/40f4820842b40cca27a935d7906af3c9.jpg" width="400" /><br/>Gakki</center>'
   );
 });
@@ -55,9 +55,6 @@ app.get('/check_p2p', function (req, res) {
 app.get('/json2jsonp', function (req, res) {
   var url = req.query.url;
   const whiteList = [
-    'https://fibos.io/getExchangeInfo',
-    'https://api.bit.cc/ticker.php?c=fo&mk_type=btc',
-    'https://api.bit.cc/ticker.php?c=eos&mk_type=btc',
     'https://api.aex.plus/ticker.php?c=fo&mk_type=btc',
     'https://api.aex.plus/ticker.php?c=fo&mk_type=cnc',
   ]

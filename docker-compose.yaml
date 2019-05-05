@@ -2,7 +2,8 @@ version: '3.1'
 
 services:
   fibos:
-    build: ./fibos
+    # build: ./fibos
+    image: mingfunwong/fibos:v1.5.4.1
     restart: always
     container_name: fibos-node
     stop_grace_period: 10m
@@ -14,9 +15,11 @@ services:
       - ./fibos/genesis.json:/fibos/genesis.json
       - ./fibos/start.js:/fibos/start.js
       - ./fibos/p2p.json:/fibos/p2p.json
+    command: ["fibos", "/fibos/start.js"]
 
   api:
-    build: ./api
+    # build: ./api
+    image: mingfunwong/fibos:api.fibos123.com
     restart: always
     links: 
       - fibos
