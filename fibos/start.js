@@ -16,13 +16,11 @@ var chain = {
 
 deleteFolderRecursive("./data/blocks")
 deleteFolderRecursive("./data/state")
-var snapshots = fs.readdir("./data/snapshots")
+var snapshots = fs.exists("./data/snapshots") ? fs.readdir("./data/snapshots") : []
 var snapshot = '';
 if (snapshots.length) {
   snapshot = snapshots[0]
   console.log("snapshot", snapshot)
-}
-if (snapshot) {
   chain["snapshot"] = './data/snapshots/' + snapshot
 } else {
   chain["genesis-json"] = "./genesis.json";

@@ -21,11 +21,11 @@ getLog();
 // 取得出块记录
 function getLog() {
 
-  request.get(url.rpc.get_info, function (err, response, body) {
+  setTimeout(function () {
+    getLog()
+  }, 1000)
 
-    setTimeout(function () {
-      getLog()
-    }, 1000)
+  request.get(url.rpc.get_info, function (err, response, body) {
 
     if (err) return
     body = JSON.parse(body)
@@ -48,7 +48,7 @@ function getLog() {
     }
     bpsArray.sort(util.compare_sort("number"));
     bpsArray = bpsArray.slice(0, 21)
-    bpsObj = {}
+    // bpsObj = {}
     for (var i in bpsArray) {
       bpsObj[bpsArray[i].name] = {
         number: bpsArray[i].number,

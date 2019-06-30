@@ -3,7 +3,7 @@ version: '3.1'
 services:
   fibos:
     # build: ./fibos
-    image: mingfunwong/fibos:v1.5.4.1
+    image: mingfunwong/fibos:v1.7.1.2
     restart: always
     container_name: fibos-node
     stop_grace_period: 10m
@@ -11,7 +11,8 @@ services:
       - 8888:8888
       - 9977:9876
     volumes:
-      - ./_data_fibos:/data
+      - ./_data_fibos:/fibos/data
+      - /snapshots:/fibos/data/snapshots
       - ./fibos/genesis.json:/fibos/genesis.json
       - ./fibos/start.js:/fibos/start.js
       - ./fibos/p2p.json:/fibos/p2p.json
