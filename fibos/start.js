@@ -33,6 +33,7 @@ fibos.load("http", {
   "http-validate-host": false,
   "verbose-http-errors": true,
 });
+fibos.load("ethash"); 
 
 setInterval(function () {
   var create_snapshot = httpClient.get("http://localhost:8888/v1/producer/create_snapshot").json()
