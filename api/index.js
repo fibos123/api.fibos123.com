@@ -5,7 +5,7 @@ var morgan = require('morgan');
 var compression = require('compression');
 
 const bp_status = require('./lib/bp_status');
-const check_p2p = require('./lib/check_p2p');
+// const check_p2p = require('./lib/check_p2p');
 const json2jsonp = require('./lib/json2jsonp');
 
 var app = express();
@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
 app.get('/', function (req, res) {
   res.send(
     '<a href="/bp_status">/bp_status</a><br>' +
-    '<a href="/check_p2p?host=p2p-mainnet.fibos123.com&port=9977">/check_p2p</a><br>' +
+    // '<a href="/check_p2p?host=p2p-mainnet.fibos123.com&port=9977">/check_p2p</a><br>' +
     '<a href="/json2jsonp?url=' + encodeURIComponent("https://api.aex.plus/ticker.php?c=fo&mk_type=cnc") + '&callback=call">/json2jsonp</a><br>' +
     '<center><img src="https://i.pinimg.com/originals/40/f4/82/40f4820842b40cca27a935d7906af3c9.jpg" width="400" /><br/>Gakki</center>'
   );
@@ -39,17 +39,17 @@ app.get('/bp_status', function (req, res) {
 });
 
 // P2P 状态检查
-app.get('/check_p2p', function (req, res) {
-  var host = req.query.host;
-  if (!/^[0-9a-z\.\-]*$/ig.test(host)) {
-    res.send({});
-    return;
-  }
-  var port = parseInt(req.query.port);
-  check_p2p.check_p2p(host, port, function (data) {
-    res.json(data)
-  })
-});
+// app.get('/check_p2p', function (req, res) {
+//   var host = req.query.host;
+//   if (!/^[0-9a-z\.\-]*$/ig.test(host)) {
+//     res.send({});
+//     return;
+//   }
+//   var port = parseInt(req.query.port);
+//   check_p2p.check_p2p(host, port, function (data) {
+//     res.json(data)
+//   })
+// });
 
 // json2jsonp
 app.get('/json2jsonp', function (req, res) {
