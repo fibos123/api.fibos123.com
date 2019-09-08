@@ -113,6 +113,7 @@ function bp_status() {
       head_block_time: get_info.head_block_time,
       head_block_producer: get_info.head_block_producer,
       bp_status_refresh_time: bp_status_refresh_time,
+      start_time: new Date(start_time).toLocaleString()
     };
   }
 
@@ -123,6 +124,7 @@ function bp_status() {
     head_block_time: get_info.head_block_time,
     head_block_producer: get_info.head_block_producer,
     bp_status_refresh_time: bp_status_refresh_time,
+    start_time: new Date(start_time).toLocaleString()
   };
 }
 
