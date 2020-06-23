@@ -3,13 +3,13 @@
 var express = require('express');
 var compression = require('compression');
 
-const bp_status = require('./bp_status');
-const last_ghost = require('./last_ghost');
+const bpStatus = require('./controllers/bpStatus');
+const lastGhost = require('./controllers/lastGhost');
 
 var app = express();
 
 var port = process.env.PORT || 8080;
-console.log("v1.0.4");
+console.log("v1.0.5");
 
 app.use(compression());
 
@@ -30,13 +30,13 @@ app.get('/', function (req, res) {
 });
 
 // BP 在线状态
-app.get('/bp_status', function (req, res) {
-  res.json(bp_status.bp_status());
+app.get('/bp_status', async function (req, res) {
+  res.json(await bpStatus());
 });
 
 // 最新镜像
 app.get('/last_ghost', async function (req, res) {
-  res.end(await last_ghost.last_ghost());
+  res.end(await lastGhost());
 });
 
 app.listen(port, function () {

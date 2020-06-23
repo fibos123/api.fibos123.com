@@ -1,14 +1,14 @@
 # install
 
 ```
-npm install
+yarn
 ```
 
 
 # start
 
 ```
-npm start
+yarn watch
 ```
 
 # deploy

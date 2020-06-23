@@ -1,0 +1,11 @@
+POST http://api.fibos.rocks/v1/chain/get_table_rows
+
+{
+  "scope": "eosio",
+  "code": "eosio",
+  "table": "producers",
+  "json": "true",
+  "limit": 21,
+  "key_type": "float64",
+  "index_position": 2
+}
