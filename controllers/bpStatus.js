@@ -15,7 +15,7 @@ async function init() {
   await getBPs()
   await getLog()
   await getLast()
-  setTimeout(getLog, 1000)
+  setInterval(getLog, 1000)
 }
 
 async function getBPs() {
