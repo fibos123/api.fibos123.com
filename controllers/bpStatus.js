@@ -14,7 +14,7 @@ let head = {
 async function init() {
   await getBPs()
   await getLog()
-  await getLast()
+  getLast()
   setInterval(getLog, 1000)
 }
 
@@ -35,10 +35,28 @@ async function getBPs() {
   });
 }
 
+async function getBlock(block_num_or_id) {
+  const { data } = await axios.post(url.rpc.get_block, { "block_num_or_id": block_num_or_id })
+  setBPnumber(data.producer, data.block_num, data.timestamp)
+  return data;
+}
+
 async function getLast() {
+  const head_block_num = head.head_block_num;
+  const head_block_producer = head.head_block_producer;
   for (let i = 1; i <= 20; i++) {
-    const { data } = await axios.post(url.rpc.get_block, { "block_num_or_id": head.head_block_num - i * 12 })
-    setBPnumber(data.producer, data.block_num, data.timestamp)
+    getBlock(head_block_num - i * 12)
+  }
+
+  for (let i = 1; i <= 20; i++) {
+    const data = await getBlock(head_block_num - i)
+    if (data.head_block_producer != head_block_producer) {
+      const number = data.block_num
+      for (let i = 1; i <= 20; i++) {
+        getBlock(number - i * 12)
+      } 
+      continue;
+    }
   }
 }
 
@@ -46,7 +64,7 @@ function setBPnumber(bpname, number, date) {
   const index = list.findIndex(item => item.bpname === bpname)
   if (-1 === index) {
     list.push({ bpname, number, date })
-  } else {
+  } else if (list[index].number < number) {
     list[index] = { bpname, number, date }
   }
 }
