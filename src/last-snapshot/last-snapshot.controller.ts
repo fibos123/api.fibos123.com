@@ -8,14 +8,12 @@ export class LastSnapshotController {
 
   @Get()
   async getHello(): Promise<string> {
-    /*
     const url = "https://fo.blockeden.cn/"
     let uri = ""
     const { data } = await axios.get(url);
     uri = $(data).find("a:last").attr("href")
     return url + uri
-    */
-     return "https://github.com/andy-backup/fibos/raw/master/snapshot.bin"
+    //return "https://github.com/andy-backup/fibos/raw/master/snapshot.bin"
   }
 
 }
