@@ -1,4 +1,4 @@
-const rpc_endpoint = 'https://to-rpc.fibos.io';
+const rpc_endpoint = 'https://rpc-mainnet.fibos123.com';
 const config = {
   rpc_endpoint,
   rpc_get_table_rows: rpc_endpoint + '/v1/chain/get_table_rows',
