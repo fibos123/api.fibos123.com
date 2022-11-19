@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  node:
+    image: node:lts-alpine
+    working_dir: /app
+    ports:
+      - '8080:8080'
+    volumes:
+      - '.:/app'
+    command:
+      - /bin/sh
+      - -c
+      - |
+        yarn
+        yarn build
+        yarn start:prod
