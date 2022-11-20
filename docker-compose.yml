@@ -1,17 +1,7 @@
 version: '2'
 
 services:
-  node:
-    image: node:lts-alpine
-    working_dir: /app
+  api.fibos123.com:
+    image: mingfunwong/api.fibos123.com
     ports:
       - '8080:8080'
-    volumes:
-      - '.:/app'
-    command:
-      - /bin/sh
-      - -c
-      - |
-        yarn
-        yarn build
-        yarn start:prod

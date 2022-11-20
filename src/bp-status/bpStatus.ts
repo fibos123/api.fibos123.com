@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as _ from 'lodash';
-import { BpStatus } from 'src/interfaces/BpStatus';
+import { BpStatus } from '../interfaces/BpStatus';
 import config from './config';
 
 let list = []
