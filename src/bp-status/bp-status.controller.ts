@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { BpStatus } from 'src/interfaces/BpStatus';
+import { BpStatus } from '../interfaces/BpStatus';
 import { BpStatusService } from './bp-status.service';
 
 @Controller('bp_status')

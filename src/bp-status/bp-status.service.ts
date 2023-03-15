@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { IBlock } from 'src/interfaces/IBlock';
-import { IInfo } from 'src/interfaces/IInfo';
-import { IProducers } from 'src/interfaces/IProducers';
+import { IBlock } from '../interfaces/IBlock';
+import { IInfo } from '../interfaces/IInfo';
+import { IProducers } from '../interfaces/IProducers';
 import { BpStatus, Rows2 } from '../interfaces/BpStatus';
 
 @Injectable()
