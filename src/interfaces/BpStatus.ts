@@ -1,6 +1,6 @@
-export interface BpStatus {
-  rows: any[];
-  rows2: Rows2[];
+export class BpStatus {
+  rows: any[] = [];
+  rows2: Rows2[] = [];
   head_block_num: number;
   head_block_time: string | Date;
   head_block_producer: string;
@@ -8,7 +8,7 @@ export interface BpStatus {
   start_time: string | Date;
 }
 
-export interface Rows2 {
+export class Rows2 {
   bpname: string;
   number: number;
   date: any;

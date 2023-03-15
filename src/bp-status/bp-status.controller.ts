@@ -1,13 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { BpStatus } from '../interfaces/BpStatus';
-import bpStatus from './bpStatus';
+import { BpStatus } from 'src/interfaces/BpStatus';
+import { BpStatusService } from './bp-status.service';
 
 @Controller('bp_status')
 export class BpStatusController {
+  constructor(private bpStatusService: BpStatusService) {}
 
   @Get()
-  getHello(): Promise<BpStatus> {
-    return bpStatus()
+  getBpStatus(): BpStatus {
+    return this.bpStatusService.getBpStatus();
   }
-
 }

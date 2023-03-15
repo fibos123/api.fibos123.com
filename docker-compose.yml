@@ -6,3 +6,5 @@ services:
     restart: unless-stopped
     ports:
       - '8080:8080'
+    environment:
+      FIBOS_RPC_ENDPOINT: ${FIBOS_RPC_ENDPOINT}
