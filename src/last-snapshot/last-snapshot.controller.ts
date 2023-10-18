@@ -13,7 +13,7 @@ export class LastSnapshotController {
 //     const { data } = await axios.get(url);
 //     uri = $(data).find("a:last").attr("href")
 //     return url + uri
-    return "https://github.com/andy-backup/fibos/raw/master/snapshot.bin"
+    return "https://snapshots.fibos123.com/latest.bin"
   }
 
 }
