@@ -24,7 +24,7 @@ export class BpStatusService {
   };
 
   constructor() {
-    setTimeout(this._init.bind(this), 2 * 1000) // 2min
+    setTimeout(this._init.bind(this), 1 * 1000) // 1min
   }
 
   private async _init() {
