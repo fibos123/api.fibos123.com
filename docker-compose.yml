@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  api.fibos123.com:
+    image: api1
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      FIBOS_RPC_ENDPOINT: ${FIBOS_RPC_ENDPOINT}
+    volumes:
+      - ./api-fibos123-com:/usr/src/app/data/
