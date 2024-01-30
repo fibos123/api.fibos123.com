@@ -2,7 +2,7 @@ version: '2'
 
 services:
   api.fibos123.com:
-    image: api1
+    image: docker.io/mingfunwong/api.fibos123.com
     restart: unless-stopped
     ports:
       - '3000:3000'
