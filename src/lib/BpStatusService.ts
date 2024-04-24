@@ -85,15 +85,17 @@ export default class BpStatusService {
         index_position: 2,
       }),
     });
-    const data = await response.json() as IProducers;
-
-    if (!data.rows || !data.rows.length) {
-      return false;
+    try {
+      const data = await response.json() as IProducers;
+      if (!data.rows || !data.rows.length) {
+        return false;
+      }
+      const bps = data.rows.map((x) => x.owner);
+      const sort = bps.sort();
+      this._list = sort;
+    } catch (error) {
+      console.error("_getBPs response.json(): ", error);
     }
-    const bps = data.rows.map((x) => x.owner);
-    const sort = bps.sort();
-
-    this._list = sort;
   }
 
   private async _getBlock(block_num_or_id: string | number) {
