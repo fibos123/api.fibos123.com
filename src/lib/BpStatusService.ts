@@ -56,19 +56,23 @@ export default class BpStatusService {
 
   private async _getHead() {
     const response = await fetch(this._config.rpc_get_info);
-    const data = await response.json() as IInfo;
-    this._head = {
-      head_block_num: data.head_block_num,
-      head_block_time: data.head_block_time,
-      head_block_producer: data.head_block_producer,
-      bp_status_refresh_time: new Date(),
-      start_time: this._head.start_time,
-    };
-    this._bpInfo.set(data.head_block_producer, {
-      bpname: data.head_block_producer,
-      number: data.head_block_num,
-      date: data.head_block_time,
-    });
+    try {
+      const data = await response.json() as IInfo;
+      this._head = {
+        head_block_num: data.head_block_num,
+        head_block_time: data.head_block_time,
+        head_block_producer: data.head_block_producer,
+        bp_status_refresh_time: new Date(),
+        start_time: this._head.start_time,
+      };
+      this._bpInfo.set(data.head_block_producer, {
+        bpname: data.head_block_producer,
+        number: data.head_block_num,
+        date: data.head_block_time,
+      });
+    } catch (error) {
+      console.error("_getHead response.json(): ", error);
+    }
   }
 
   private async _getBPs() {
