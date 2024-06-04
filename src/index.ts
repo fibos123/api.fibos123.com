@@ -3,6 +3,7 @@ import { cors } from "hono/cors";
 import { html } from "hono/html";
 import last_snapshot from "./last_snapshot";
 import bp_status from "./bp_status";
+import schedule from "./schedule";
 
 type Bindings = {
   DB: D1Database;
@@ -27,5 +28,12 @@ app.route('/last_snapshot', last_snapshot)
 
 app.route('/bp_status', bp_status)
 
-export default app;
+const scheduled: ExportedHandlerScheduledHandler = async (controller: ScheduledController, env: any, ctx: ExecutionContext) => {
+  ctx.waitUntil(schedule(controller, env, ctx))
+}
+
+export default {
+  fetch: app.fetch,
+  scheduled,
+}
 

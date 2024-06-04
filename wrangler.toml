@@ -5,7 +5,13 @@ send_metrics = false
 [[d1_databases]]
 binding = "DB"
 database_name = "api-fibos123-com"
-database_id = "97927bc4-9229-4e68-b9a3-fbce243875c4"
+database_id = "e635d0cf-ca15-4e52-b775-2ef282781ba0"
+
+[vars]
+RPC_ENDPOINT = "https://rpc-mainnet.fibos123.com"
+
+[triggers]
+crons = ["*/2 * * * *"]
 
 # [vars]
 # MY_VAR = "my-variable"

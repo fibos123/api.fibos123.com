@@ -8,22 +8,23 @@ import { DrizzleD1Database, drizzle } from "drizzle-orm/d1";
 import { Context } from "hono";
 
 type Bindings = {
+  RPC_ENDPOINT: string;
   DB: D1Database;
 };
 
 export default class BpStatusService {
-  private _rpc_endpoint = "https://rpc-mainnet.fibos123.com";
+  private _rpc_endpoint = "";
   private _config = {
-    rpc_endpoint: this._rpc_endpoint,
-    rpc_get_table_rows: this._rpc_endpoint + '/v1/chain/get_table_rows',
-    rpc_get_info: this._rpc_endpoint + '/v1/chain/get_info',
-    rpc_get_block: this._rpc_endpoint + '/v1/chain/get_block',
+    rpc_get_table_rows: '/v1/chain/get_table_rows',
+    rpc_get_info: '/v1/chain/get_info',
+    rpc_get_block: '/v1/chain/get_block',
   };
   private db: DrizzleD1Database<Record<string, never>>;
   constructor(c: Context<{
     Bindings: Bindings;
   }>) {
     this.db = drizzle(c.env.DB);
+    this._rpc_endpoint = c.env.RPC_ENDPOINT || "https://rpc-mainnet.fibos123.com"
   }
 
   public async getBpStatus(): Promise<BpStatus> {
@@ -53,7 +54,7 @@ export default class BpStatusService {
   }
 
   public async getBPs() {
-    const response = await fetch(this._config.rpc_get_table_rows, {
+    const response = await fetch(this._rpc_endpoint + this._config.rpc_get_table_rows, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -91,7 +92,7 @@ export default class BpStatusService {
   private async getBlock(block_num_or_id: string | number) {
     try {
       console.log("getBlock", block_num_or_id);
-      const response = await fetch(this._config.rpc_get_block, {
+      const response = await fetch(this._rpc_endpoint + this._config.rpc_get_block, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -124,7 +125,7 @@ export default class BpStatusService {
   }
 
   private async getHead() {
-    const response = await fetch(this._config.rpc_get_info);
+    const response = await fetch(this._rpc_endpoint + this._config.rpc_get_info);
     let headData = null;
     try {
       const data = await response.json() as IInfo;
