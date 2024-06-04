@@ -1,0 +1,27 @@
+name = "api-fibos123-com"
+compatibility_date = "2023-12-01"
+send_metrics = false
+
+[[d1_databases]]
+binding = "DB"
+database_name = "api-fibos123-com"
+database_id = "97927bc4-9229-4e68-b9a3-fbce243875c4"
+
+# [vars]
+# MY_VAR = "my-variable"
+
+# [[kv_namespaces]]
+# binding = "MY_KV_NAMESPACE"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "my-bucket"
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "my-database"
+# database_id = ""
+
+# [ai]
+# binding = "AI"
