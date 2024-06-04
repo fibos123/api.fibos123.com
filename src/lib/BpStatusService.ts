@@ -117,7 +117,7 @@ export default class BpStatusService {
     const oldMax = bpsMax?.value
     if (oldMax < head_block_num) {
       const promises = [];
-      for (let i = Math.max(head_block_num - 12 * 20, oldMax); i < head_block_num; i += 12) {
+      for (let i = Math.max(head_block_num - 10 * 25, oldMax); i < head_block_num; i += 10) {
         promises.push(this.getBlock(i));
       }
       await Promise.all(promises);
