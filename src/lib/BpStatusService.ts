@@ -1,4 +1,4 @@
-import { eq, lte, max } from "drizzle-orm";
+import { and, eq, lt, lte, max } from "drizzle-orm";
 import { bps, head } from "../schema";
 import { BpStatus } from "../types/BpStatus";
 import type { IBlock } from "../types/IBlock";
@@ -15,74 +15,71 @@ type Bindings = {
 export default class BpStatusService {
   private _rpc_endpoint = "";
   private _config = {
-    rpc_get_table_rows: '/v1/chain/get_table_rows',
-    rpc_get_info: '/v1/chain/get_info',
-    rpc_get_block: '/v1/chain/get_block',
+    rpc_get_table_rows: "/v1/chain/get_table_rows",
+    rpc_get_info: "/v1/chain/get_info",
+    rpc_get_block: "/v1/chain/get_block",
   };
   private db: DrizzleD1Database<Record<string, never>>;
-  constructor(c: Context<{
-    Bindings: Bindings;
-  }>) {
+  constructor(
+    c: Context<{
+      Bindings: Bindings;
+    }>
+  ) {
     this.db = drizzle(c.env.DB);
-    this._rpc_endpoint = c.env.RPC_ENDPOINT || "https://rpc-mainnet.fibos123.com"
+    this._rpc_endpoint = c.env.RPC_ENDPOINT || "https://rpc-mainnet.fibos123.com";
   }
 
   public async getBpStatus(): Promise<BpStatus> {
-    let headData: any = null
+    let headData: any = null;
     try {
-      headData = await this.getHead()
-    } catch {
-    }
+      headData = await this.getHead();
+    } catch {}
 
     if (headData === null) {
       headData = await this.db.select().from(head).get();
     }
 
-    const bp21 = await this.db
-      .select({ bpname: bps.bpname, number: bps.number, date: bps.date })
-      .from(bps)
-      .where(lte(bps.ranking, 21))
-      .orderBy(bps.bpname)
-      .all();
+    const bp21 = await this.db.select({ bpname: bps.bpname, number: bps.number, date: bps.date }).from(bps).where(lte(bps.ranking, 21)).orderBy(bps.bpname).all();
     const data: BpStatus = {
       head_block_num: headData.head_block_num,
       head_block_time: headData.head_block_time,
       head_block_producer: headData.head_block_producer,
       rows2: bp21,
-    }
+    };
     return data;
   }
 
   public async getBPs() {
     const response = await fetch(this._rpc_endpoint + this._config.rpc_get_table_rows, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        scope: 'eosio',
-        code: 'eosio',
-        table: 'producers',
+        scope: "eosio",
+        code: "eosio",
+        table: "producers",
         json: true,
         limit: 100,
-        key_type: 'float64',
+        key_type: "float64",
         index_position: 2,
       }),
     });
     try {
-      const data = await response.json() as IProducers;
+      const data = (await response.json()) as IProducers;
       if (!data.rows || !data.rows.length) {
         return false;
       }
       data.rows.forEach(async (bp, index) => {
-        const ranking = index + 1
-        await this.db.insert(bps)
+        const ranking = index + 1;
+        await this.db
+          .insert(bps)
           .values({ ranking: ranking, bpname: bp.owner, number: 0 })
           .onConflictDoUpdate({
             target: bps.bpname,
             set: {
-              ranking: ranking
-            }
+              ranking: ranking,
+            },
           });
-      })
+      });
     } catch (error) {
       console.error("getBPs response: ", error);
     }
@@ -93,31 +90,34 @@ export default class BpStatusService {
     try {
       console.log("getBlock", block_num_or_id);
       const response = await fetch(this._rpc_endpoint + this._config.rpc_get_block, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           block_num_or_id: block_num_or_id,
         }),
       });
-      const data = await response.json() as IBlock;
+      const data = (await response.json()) as IBlock;
       await this.db
         .update(bps)
         .set({ number: data.block_num, date: data.timestamp })
-        .where(eq(bps.bpname, data.producer));
+        .where(and(eq(bps.bpname, data.producer), lt(bps.number, data.block_num)));
     } catch (error) {
       console.error("getBlock response: ", error);
     }
   }
 
   private async getLast(head_block_num: number) {
-    const bpsMax = await this.db.select({ value: max(bps.number) }).from(bps).get();
+    const bpsMax = await this.db
+      .select({ value: max(bps.number) })
+      .from(bps)
+      .get();
     if (!bpsMax || !bpsMax?.value) {
-      return
+      return;
     }
-    const oldMax = bpsMax?.value
+    const oldMax = bpsMax?.value;
     if (oldMax < head_block_num) {
       const promises = [];
-      for (let i = Math.max(head_block_num - 10 * 25, oldMax); i < head_block_num; i += 10) {
+      for (let i = Math.max(head_block_num - 8 * 32, oldMax); i < head_block_num; i += 8) {
         promises.push(this.getBlock(i));
       }
       await Promise.all(promises);
@@ -128,32 +128,30 @@ export default class BpStatusService {
     const response = await fetch(this._rpc_endpoint + this._config.rpc_get_info);
     let headData = null;
     try {
-      const data = await response.json() as IInfo;
+      const data = (await response.json()) as IInfo;
       headData = {
-        id: 1
-        , head_block_num: data.head_block_num
-        , head_block_time: data.head_block_time
-        , head_block_producer: data.head_block_producer
-      }
-      await this.db.insert(head)
+        id: 1,
+        head_block_num: data.head_block_num,
+        head_block_time: data.head_block_time,
+        head_block_producer: data.head_block_producer,
+      };
+      await this.db
+        .insert(head)
         .values(headData)
         .onConflictDoUpdate({
           target: head.id,
           set: {
-            head_block_num: data.head_block_num
-            , head_block_time: data.head_block_time
-            , head_block_producer: data.head_block_producer
-          }
+            head_block_num: data.head_block_num,
+            head_block_time: data.head_block_time,
+            head_block_producer: data.head_block_producer,
+          },
         });
 
-      await this.getLast(data.head_block_num)
-      await this.db
-        .update(bps)
-        .set({ number: data.head_block_num, date: data.head_block_time })
-        .where(eq(bps.bpname, data.head_block_producer));
+      await this.getLast(data.head_block_num);
+      await this.db.update(bps).set({ number: data.head_block_num, date: data.head_block_time }).where(eq(bps.bpname, data.head_block_producer));
     } catch (error) {
       console.error("getHead response: ", error);
     }
-    return headData
+    return headData;
   }
 }
