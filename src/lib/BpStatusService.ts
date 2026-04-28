@@ -80,6 +80,7 @@ export default class BpStatusService {
             },
           });
       });
+      return data;
     } catch (error) {
       console.error("getBPs response: ", error);
     }
