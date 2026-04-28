@@ -70,15 +70,19 @@ export default class BpStatusService {
       }
       data.rows.forEach(async (bp, index) => {
         const ranking = index + 1;
-        await this.db
-          .insert(bps)
-          .values({ ranking: ranking, bpname: bp.owner, number: 0 })
-          .onConflictDoUpdate({
-            target: bps.bpname,
-            set: {
-              ranking: ranking,
-            },
-          });
+        try {
+          await this.db
+            .insert(bps)
+            .values({ ranking: ranking, bpname: bp.owner, number: 0 })
+            .onConflictDoUpdate({
+              target: bps.bpname,
+              set: {
+                ranking: ranking,
+              },
+            });
+        } catch (error) {
+          console.error("getBPs insert: ", error);
+        }
       });
       return data;
     } catch (error) {
