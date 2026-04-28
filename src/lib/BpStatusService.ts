@@ -64,11 +64,15 @@ export default class BpStatusService {
       }),
     });
     try {
+      if (!response.ok) {
+        throw new Error(`get_table_rows failed: ${response.status} ${response.statusText}`);
+      }
+
       const data = (await response.json()) as IProducers;
       if (!data.rows || !data.rows.length) {
         return false;
       }
-      data.rows.forEach(async (bp, index) => {
+      for (const [index, bp] of data.rows.entries()) {
         const ranking = index + 1;
         try {
           await this.db
@@ -83,7 +87,7 @@ export default class BpStatusService {
         } catch (error) {
           console.error("getBPs insert: ", error);
         }
-      });
+      }
       return data;
     } catch (error) {
       console.error("getBPs response: ", error);
