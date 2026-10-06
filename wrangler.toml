@@ -8,7 +8,7 @@ database_name = "api-fibos123-com"
 database_id = "e635d0cf-ca15-4e52-b775-2ef282781ba0"
 
 [vars]
-RPC_ENDPOINT = "https://rpc-mainnet.fibos123.com"
+RPC_ENDPOINT = "https://to-rpc.fibos.io"
 
 [triggers]
 crons = ["*/2 * * * *"]
