@@ -29,11 +29,16 @@ export default class BpStatusService {
     this._rpc_endpoint = c.env.RPC_ENDPOINT || "https://rpc-mainnet.fibos123.com";
   }
 
-  public async getBpStatus(): Promise<BpStatus> {
+  // skipHead is a hidden probe (query param ?nohead=1 on /bp_status):
+  // it skips the RPC get_info fetch and everything getHead() writes,
+  // so the request measures the D1-read-only path via the fallback below.
+  public async getBpStatus(skipHead = false): Promise<BpStatus> {
     let headData: any = null;
-    try {
-      headData = await this.getHead();
-    } catch {}
+    if (!skipHead) {
+      try {
+        headData = await this.getHead();
+      } catch {}
+    }
 
     if (headData === null) {
       headData = await this.db.select().from(head).get();
